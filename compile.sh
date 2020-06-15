@@ -38,7 +38,7 @@ compile() {
   if [ ! "$VERBOSE" ]; then
     export PYTHONWARNINGS=ignore
   fi
- $pre pandoc -t latex --pdf-engine=xelatex -o "$OUTFILE" "$INFILE" $post 2>&1
+ $pre pandoc -t latex --pdf-engine=xelatex --variable "geometry:margin=1cm" -o "$OUTFILE" "$INFILE" $post 2>&1
 }
 
 cleanup() {
