@@ -1,5 +1,6 @@
 _codebraid/
-notes.pdf
+output.pdf
 _datasets/
 handson-ml2/
 .ipynb_checkpoints
+tex2pdf.-*/
