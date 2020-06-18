@@ -187,7 +187,7 @@ case "$1" in
     fi
     if [ "$output" ]; then
       printf "Produced the following ouput:\n\033[0m"
-      printf "$output"
+      printf -- "$output"
     fi
     printf "\033[0m"
     if [ "$err" ]; then exit 1; fi
