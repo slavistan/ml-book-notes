@@ -4,6 +4,10 @@ author: Stan
 urlcolor: teal
 ---
 
+# Data Preparation
+
+## Download data
+
 ```{.bash .cb.run}
 # Download the data
 URL="https://raw.githubusercontent.com/ageron/handson-ml2/master/datasets/housing/housing.csv"
@@ -16,8 +20,11 @@ options(repr.plot.width=14, repr.plot.height=9)
 library(tidyverse)
 library(cowplot)
 housing_orig <- read.csv("_datasets/housing.csv") %>% as_tibble
+```
 
-# Add interesting attributes
+## Augment attributes
+
+```
 housing <- housing_orig %>%
   mutate(rooms_per_household = total_rooms / households) %>%
   mutate(bedrooms_per_room = total_bedrooms / total_rooms) %>%
@@ -44,13 +51,13 @@ ggsave("assets/housing_histograms.png", height=6, width=6)
 ggplot(housing_orig) +
   geom_point(aes(x=longitude, y=latitude, color=median_house_value), alpha=0.3)
 
-ggsave("assets/housing_scatter_value.png", height=6, width=6)
+ggsave("assets/housing_scatter_value.png", height=6, width=10)
 ```
-![Housing data overview](assets/housing_histograms.png){width=100%}
+![Housing data overview](assets/housing_histograms.png){height=400px}
 
-![Geographical distribution of house prices](assets/housing_scatter_value.png){width=80%}
+![Geographical distribution of house prices](assets/housing_scatter_value.png){height=400px}
 
-## Correlation
+## Correlation between features
 
 ```{.R .cb.run hide=stdout+stderr}
 # compute the correlation matrix
@@ -69,7 +76,7 @@ ggsave("assets/housing_correlation.png")
 ```
 Attribute Correlation wrt. Housing Prices
 
-![](assets/housing_correlation.png){width=80%}
+![](assets/housing_correlation.png){height=400px}
 
 ```{.R .cb.run}
 library(GGally)
@@ -81,7 +88,7 @@ housing %>%
           lower = list(continuous = "cor"))
 ggsave("assets/housing_scatter_matrix.png")
 ```
-![](assets/housing_scatter_matrix.png)
+![](assets/housing_scatter_matrix.png){height=400px}
 
 Zoom in to median income
 
@@ -90,7 +97,9 @@ housing %>% ggplot +
   geom_point(aes(x=median_income, y=median_house_value), alpha=0.1)
 ggsave("assets/housing_scatter_income_vs_housevalue.png")
 ```
-![](assets/housing_scatter_income_vs_housevalue.png)
+![](assets/housing_scatter_income_vs_housevalue.png){height=400px}
+
+# Modeling
 
 ## Stratified Sampling
 
@@ -102,7 +111,7 @@ p2 <- ggplot(housing) + geom_bar(aes(x=incomecat))
 plot_grid(p1, p2)
 ggsave("assets/housing_income_as_category.png", height=6, width=12)
 ```
-![](assets/housing_income_as_category.png){width=80%}
+![](assets/housing_income_as_category.png){height=400px}
 
 ```{.R .cb.run hide=stdout+stderr}
 library(zeallot) # tuple assignment %<-%
@@ -161,7 +170,16 @@ df <- df %>% rapply(f = function(x) { round(x, 2) }, classes="numeric", how="rep
 names(df) <- c("Income Class", "Overall [%]", "Rand. [%]","Rand. δ [‰]","Stratif. [%]","Stratif. δ [‰]")
 
 plot_grid(tableGrob(df, rows=NULL), nrow=1)
-ggsave("assets/housing_stratified_vs_rng_sampling.png", height=2)
+ggsave("assets/housing_stratified_vs_rng_sampling.png", height=6)
 ```
 
-![Stratified vs. Random Sampling Accuracy](assets/housing_stratified_vs_rng_sampling.png){width=100%}
+![Stratified vs. Random Sampling Accuracy](assets/housing_stratified_vs_rng_sampling.png){height=400px}
+
+# Tidyverse Cheat Sheet
+
+`df %>% keep(is.numeric)`{.R} - Select numeric columns
+
+`df %>% summarize(mean=mean(colname)) %>% pull`{.R} - get mean/median/sd .. of a df column. `pull` extracts the single
+value from the 1x1 dataframe.
+
+`fg %>% slice_head(n=10)` - head .. 

@@ -53,7 +53,7 @@ compile() {
   if [ $VERBOSE = 0 ]; then
     export PYTHONWARNINGS=ignore
   fi
- $pre pandoc "$INFILE" --pdf-engine=xelatex --variable "geometry:margin=1cm" -o "$OUTFILE" $post 2>&1
+ $pre pandoc "$INFILE" --to html5 -o "$OUTFILE" $post 2>&1
 }
 
 cleanup() {
@@ -101,7 +101,7 @@ disable kill # see above todo
 setopt null_glob
 
 [ ! "$INFILE" ] && INFILE="markdown.md"
-[ ! "$OUTFILE" ] && OUTFILE="output.pdf"
+[ ! "$OUTFILE" ] && OUTFILE="output.html"
 [ ! "$WATCHLIST" ] && WATCHLIST="$INFILE\n${0:t}"
 [ ! "$COUNTER" ] && COUNTER=0
 
@@ -117,7 +117,7 @@ case "$1" in
     usage
     ;;
   clean)
-    rm -rf "$OUTFILE" "_codebraid" "tex2pdf.-"* "_datasets"
+    rm -rf "_codebraid" "tex2pdf.-"* "_datasets"
     ;;
   compile)
     parseargs $@
@@ -125,8 +125,7 @@ case "$1" in
     ;;
   workspace)
     st zsh -c 'nvim '"$INFILE"' '"$TAIL"'; zsh -i' &
-    echo | groff -T pdf > output.pdf
-    zathura --fork output.pdf
+    falkon "$OUTFILE" &
     st zsh -c "./$TAIL watch -v; zsh -i" &
     ;;
   watch)
