@@ -183,3 +183,5 @@ ggsave("assets/housing_stratified_vs_rng_sampling.png", height=6)
 value from the 1x1 dataframe.
 
 `fg %>% slice_head(n=10)` - head .. 
+
+`stat_bin(aes(y = stat(count))` - use `stat()` instead of `..stat..` syntax.
