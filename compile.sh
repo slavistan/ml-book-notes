@@ -127,6 +127,7 @@ case "$1" in
     st zsh -c 'nvim '"$INFILE"' '"$TAIL"'; zsh -i' &
     falkon "$OUTFILE" &
     st zsh -c "./$TAIL watch -v; zsh -i" &
+    st zsh -c "jupyter lab; zsh -i" &
     ;;
   watch)
     parseargs $@
