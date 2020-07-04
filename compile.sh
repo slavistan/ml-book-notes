@@ -18,7 +18,7 @@ usage() {
 
 \t(2) Compile markdown. Recompile when files change.
 
-\t\033[1m${TAIL} compile \033[1;3m[OPTIONS]...\033[0m
+\t\033[1m${TAIL} watch \033[1;3m[OPTIONS]...\033[0m
 
 \t\t\033[1;3m-l | --list-watched\033[0m - show watchlist and exit
 \t\t\033[1;3m-b | --codebraid\033[0m    - use codebraid
