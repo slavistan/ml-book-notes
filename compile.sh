@@ -53,7 +53,7 @@ compile() {
   if [ $VERBOSE = 0 ]; then
     export PYTHONWARNINGS=ignore
   fi
- $pre pandoc "$INFILE" --to html5 -o "$OUTFILE" $post 2>&1
+ $pre pandoc "$INFILE" --to html5 -o "$OUTFILE" $post
 }
 
 cleanup() {
@@ -63,6 +63,7 @@ cleanup() {
   kill "$SPIN_PID" > /dev/null 2>&1
   pkill -P $WATCH_PID > /dev/null 2>&1 # kill watcher kids
   kill "$WATCH_PID" > /dev/null 2>&1 # kill watcher (entr ..)
+  return 0
 }
 
 togglespinner() {
@@ -91,7 +92,7 @@ parseargs() {
     [ "$opt" = "--codebraid" ] && opt=-b
     [ "$opt" = "--verbose" ] && opt=-v
     [ "$opt" = "--list-watched" ] && opt=-l
-    printf -- "$opt" | grep -qE '^-.*c.*$' && CODEBRAID=1
+    printf -- "$opt" | grep -qE '^-.*b.*$' && CODEBRAID=1
     printf -- "$opt" | grep -qE '^-.*v.*$' && VERBOSE=1
     printf -- "$opt" | grep -qE '^-.*l.*$' && LISTWATCHED=1
   done 
@@ -120,6 +121,7 @@ case "$1" in
     rm -rf "_codebraid" "tex2pdf.-"* "_datasets"
     ;;
   compile)
+    shift
     parseargs $@
     compile
     ;;
@@ -130,6 +132,7 @@ case "$1" in
     st zsh -c "jupyter lab; zsh -i" &
     ;;
   watch)
+    shift
     parseargs $@
     if [ $LISTWATCHED = 1 ]; then
       printf "$WATCHLIST\n"
