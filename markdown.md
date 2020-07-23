@@ -8,6 +8,20 @@ urlcolor: teal
 
 ## Download data
 
+```{.bash .cb.run session=test_bash live_output=true}
+for ii in {1..5}; do
+  printf "$ii/5\n"
+  sleep 1
+done
+```
+
+```{.python .cb.run executable="python3 -u" session=test_py live_output=true}
+import time
+for ii in range(5):
+  print(ii+1, "/5", sep='')
+  time.sleep(1)
+```
+
 ```{.bash .cb.run}
 # Download the data
 URL="https://raw.githubusercontent.com/ageron/handson-ml2/master/datasets/housing/housing.csv"
